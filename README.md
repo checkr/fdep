@@ -1,9 +1,9 @@
 <img src="https://github.com/checkr/fdep/raw/master/misc/fdep.png" align="right" />
 
-Fdep
+fdep
 ====
 
-Fdep is a simple, easy-to-use, production-ready command line/library written in Python to download datasets, misc. files for your machine learning projects.
+fdep is a simple, easy-to-use, production-ready command line/library written in Python to download datasets, misc. files for your machine learning projects.
 
 Currently it supports: AWS S3, HTTP/HTTPS
 
