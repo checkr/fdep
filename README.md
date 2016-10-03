@@ -1,3 +1,5 @@
+<img src="https://github.com/checkr/fdep/raw/master/misc/fdep.png" align="right" />
+
 Fdep
 ====
 
