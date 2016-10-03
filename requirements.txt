@@ -1,0 +1,9 @@
+PyYAML
+boto3
+requests
+colorama
+tqdm
+
+pytest
+pytest-cov
+pytest-blockage
