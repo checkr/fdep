@@ -6,4 +6,6 @@ tqdm
 
 pytest
 pytest-cov
+pytest-mock
 pytest-blockage
+tox

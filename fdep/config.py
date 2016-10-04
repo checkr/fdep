@@ -7,21 +7,30 @@ class FdepConfig(object):
     """Serialize and unserialize fdep configuration file."""
 
     def __init__(self, config_dict):
+        """Initialize a fdep configuration object with a dictionary.
+
+        >>> fdep = FdepConfig({"default": {"data.txt": "s3://test/data.txt"}})
+        >>> fdep.config["default"]["data.txt"]
+        's3://test/data.txt'
+        """
         self.config = config_dict
 
     def save(self, path):
+        """Save a fdep configuration object into a YAML file."""
         with open(path, 'w') as f:
             f.write(yaml.dump(self.config, default_flow_style=False))
 
     @classmethod
     def load(cls, path):
+        """Load a fdep configuration from a YAML file."""
         with open(path) as f:
             return FdepConfig(yaml.load(f.read()))
 
     @classmethod
-    def find_local_config(cls):
+    def find_local_config(cls, current_path='.'):
+        """Find a local configuration path."""
         paths_to_search = set()
-        current_path = ['.']
+        current_path = [current_path]
 
         while True:
             path = os.path.abspath(

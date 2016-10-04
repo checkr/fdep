@@ -18,9 +18,10 @@ import os
 
 class FdepInterpreter(object):
 
-    def __init__(self, env, config_path):
+    def __init__(self, env, config_path, current_path='.'):
         self.env = env
         self.config_path = config_path
+        self.current_path = current_path
         self.configure()
 
     def configure(self):
@@ -42,17 +43,19 @@ class FdepInterpreter(object):
         config_dict = {}
         for env in args:
             config_dict[env] = {}
-        self.config_path = os.path.abspath(os.path.join(self.current_path, './fdep.yml'))
+        self.config_path = os.path.abspath(
+            os.path.join(self.current_path, './fdep.yml'))
         self.fdep = FdepConfig(config_dict)
         self.fdep.save(self.config_path)
         self.configure()
         print('Initialized at {}'.format(self.config_path))
+        return True
 
     def _install_one_dep(self, local_path, source):
         local_path = os.path.join(self.base_dir, local_path)
 
         try:
-            os.makedirs(os.path.dirname(local_path), exist_ok=True)
+            os.makedirs(os.path.dirname(local_path))
         except:
             pass
 
@@ -112,7 +115,10 @@ class FdepInterpreter(object):
         return True
 
     def _upload_one_dep(self, local_path):
-        local_path = os.path.join(self.base_dir, local_path)
+        local_path = os.path.relpath(
+            os.path.join(self.current_path, local_path),
+            self.base_dir
+        )
 
         try:
             source = self.fdep.config[self.env][local_path]
@@ -148,7 +154,9 @@ class FdepInterpreter(object):
             key = o.path[1:]
             client = boto3.client('s3')
             try:
-                total_length = os.stat(local_path).st_size
+                total_length = os.stat(
+                    os.path.join(self.base_dir, local_path)
+                ).st_size
             except:
                 sys.stderr.write(
                     Fore.RED + 'File does not exist: {}\n'.format(local_path) + Fore.RESET)
@@ -216,17 +224,21 @@ class FdepInterpreter(object):
         return True
 
     def add_dependency(self, alias, source):
+        alias = os.path.join(self.current_path, alias)
         abs_alias = os.path.relpath(alias, self.base_dir)
         if self._install_one_dep(abs_alias, source):
             self.fdep.config[self.env][abs_alias] = source
             self.fdep.save(self.config_path)
+            return True
         else:
             return False
 
     def rm_dependency(self, alias):
+        alias = os.path.join(self.current_path, alias)
         abs_alias = os.path.relpath(alias, self.base_dir)
         del self.fdep.config[self.env][abs_alias]
         self.fdep.save(self.config_path)
+        return True
 
     def print_usage(self):
         print(dedent("""\
@@ -242,9 +254,11 @@ class FdepInterpreter(object):
           add <local path> <remote path>  Add a new dependency to the project
           rm <local path>                 Remove a dependency in the project
         """))
+        return True
 
     def print_version(self):
         print(__VERSION__)
+        return True
 
     def run(self, argv):
         if not len(argv):
