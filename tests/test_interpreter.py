@@ -1,6 +1,5 @@
 from fdep.interpreter import FdepInterpreter
 from fdep.config import FdepConfig
-import os
 
 
 def test_run_help(fdep_yml):
