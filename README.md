@@ -1,6 +1,16 @@
 <img src="https://github.com/checkr/fdep/raw/master/misc/fdep.png" align="right" />
 
-# fdep [![CircleCI](https://circleci.com/gh/checkr/fdep/tree/master.svg?style=svg&circle-token=290f477815cb38bc3b464699362e6cae6880823f)](https://circleci.com/gh/checkr/fdep/tree/master)
+<h1>
+  fdep
+  &nbsp;
+  <a href="https://circleci.com/gh/checkr/fdep/tree/master">
+    <img src="https://circleci.com/gh/checkr/fdep/tree/master.svg?style=shield&circle-token=290f477815cb38bc3b464699362e6cae6880823f" alt="CircleCI">
+  </a>
+  <a href="https://circleci.com/gh/checkr/fdep/tree/master">
+    <img src="https://img.shields.io/badge/python-2,%203,%20pypy-green.svg?style=flat" alt="Supported Versions">
+  </a>
+  
+</h1>
 
 fdep is a simple, easy-to-use, production-ready command line/library written in Python to download datasets, misc. files for your machine learning projects.
 
