@@ -17,9 +17,7 @@ setup(
     description="Fdep is a simple, easy-to-use, production-ready tool/library written in Python to download datasets, misc. files for your machine learning projects.",
     long_description=ldsc,
     entry_points={
-        'console_scripts': [
-            'fdep = fdep.__main__:main'
-        ]
+        'console_scripts': ['fdep=fdep.__main__:main']
     },
     install_requires=[
         'PyYAML==3.12',
