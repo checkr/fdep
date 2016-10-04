@@ -1,13 +1,15 @@
 from setuptools import setup
+from fdep import __VERSION__
 
 try:
-    ldsc = open("README.rst").read()
+    ldsc = open("README.md").read()
 except:
     ldsc = ""
 
 setup(
     name="fdep",
-    version="0.1.0",
+    packages=['fdep'],
+    version=__VERSION__,
     author="Checkr",
     author_email="eng@checkr.com",
     url="http://github.com/checkr/fdep",
