@@ -8,4 +8,6 @@ pytest
 pytest-cov
 pytest-mock
 pytest-blockage
+
 tox
+tox-pyenv

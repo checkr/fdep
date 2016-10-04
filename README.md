@@ -1,7 +1,6 @@
 <img src="https://github.com/checkr/fdep/raw/master/misc/fdep.png" align="right" />
 
-fdep
-====
+# fdep [![CircleCI](https://circleci.com/gh/checkr/fdep/tree/master.svg?style=svg&circle-token=290f477815cb38bc3b464699362e6cae6880823f)](https://circleci.com/gh/checkr/fdep/tree/master)
 
 fdep is a simple, easy-to-use, production-ready command line/library written in Python to download datasets, misc. files for your machine learning projects.
 
