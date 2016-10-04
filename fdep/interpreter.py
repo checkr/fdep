@@ -21,8 +21,32 @@ class FdepInterpreter(object):
     def __init__(self, env, config_path):
         self.env = env
         self.config_path = config_path
-        self.base_dir = os.path.dirname(config_path)
-        self.fdep = FdepConfig.load(config_path)
+        self.configure()
+
+    def configure(self):
+        try:
+            self.base_dir = os.path.dirname(self.config_path)
+            self.fdep = FdepConfig.load(self.config_path)
+        except:
+            self.base_dir = None
+            self.fdep = None
+
+    def initialize_project(self, *args):
+        if self.fdep:
+            sys.stderr.write(Fore.RED + 'Already initialized.\n' + Fore.RESET)
+            return False
+
+        if not len(args):
+            args = [self.env]
+
+        config_dict = {}
+        for env in args:
+            config_dict[env] = {}
+        self.config_path = os.path.abspath('./fdep.yml')
+        self.fdep = FdepConfig(config_dict)
+        self.fdep.save(self.config_path)
+        self.configure()
+        print('Initialized at {}'.format(self.config_path))
 
     def _install_one_dep(self, local_path, source):
         try:
@@ -41,7 +65,8 @@ class FdepInterpreter(object):
             return False
 
         if os.path.exists(local_path):
-            print('[' + Fore.BLUE + '*' + Fore.RESET + '] {} is already installed.'.format(local_path))
+            print('[' + Fore.BLUE + '*' + Fore.RESET +
+                  '] {} is already installed.'.format(local_path))
             return True
 
         print(
@@ -50,7 +75,7 @@ class FdepInterpreter(object):
              Fore.RESET + ' from ' + Fore.RED + '{}' +
              Fore.RESET + '...').format(
                  local_path, source
-             )
+            )
         )
 
         if o.scheme in ('http', 'https'):
@@ -68,11 +93,13 @@ class FdepInterpreter(object):
             try:
                 obj = client.get_object(Bucket=bucket, Key=key)
             except Exception as e:
-                sys.stderr.write(Fore.RED + 'AWS S3 Error: {}\n'.format(e) + Fore.RESET)
+                sys.stderr.write(
+                    Fore.RED + 'AWS S3 Error: {}\n'.format(e) + Fore.RESET)
                 return False
             total_length = obj.get('ContentLength', 0)
             with tqdm(total=total_length, unit='B', unit_scale=True) as pbar:
-                client.download_file(bucket, key, local_path, Callback=pbar.update)
+                client.download_file(
+                    bucket, key, local_path, Callback=pbar.update)
         else:
             sys.stderr.write(
                 Fore.RED +
@@ -109,9 +136,9 @@ class FdepInterpreter(object):
              Fore.RESET + ' to ' + Fore.RED + '{}' +
              Fore.RESET + '...').format(
                  local_path, source
-             )
+            )
         )
-        
+
         if o.scheme in ('s3', ):
             bucket = o.netloc
             key = o.path[1:]
@@ -119,11 +146,13 @@ class FdepInterpreter(object):
             try:
                 total_length = os.stat(local_path).st_size
             except:
-                sys.stderr.write(Fore.RED + 'File does not exist: {}\n'.format(local_path) + Fore.RESET)
+                sys.stderr.write(
+                    Fore.RED + 'File does not exist: {}\n'.format(local_path) + Fore.RESET)
                 return False
-            
+
             with tqdm(total=total_length, unit='B', unit_scale=True) as pbar:
-                client.upload_file(local_path, bucket, key, Callback=pbar.update)
+                client.upload_file(local_path, bucket, key,
+                                   Callback=pbar.update)
         else:
             sys.stderr.write(
                 Fore.RED +
@@ -132,9 +161,17 @@ class FdepInterpreter(object):
             )
             return False
         return True
-    
+
     def check(self):
-        if not self.fdep.config.get(self.env):
+        if self.fdep is None:
+            sys.stderr.write(
+                Fore.RED +
+                "Missing fdep.yml. Please run fdep init first!\n" +
+                Fore.RESET
+            )
+            return False
+
+        if self.fdep.config.get(self.env) is None:
             sys.stderr.write(
                 Fore.RED +
                 "No section defined for the environment {}\n".format(
@@ -163,7 +200,7 @@ class FdepInterpreter(object):
                 Fore.RESET
             )
             return False
-        
+
         for local_path in local_paths:
             if not self._upload_one_dep(local_path):
                 sys.stderr.write(
@@ -177,6 +214,7 @@ class FdepInterpreter(object):
     def add_dependency(self, alias, source):
         abs_alias = os.path.relpath(alias, self.base_dir)
         if self._install_one_dep(abs_alias, source):
+            self.fdep.config[self.env][abs_alias] = source
             self.fdep.save(self.config_path)
         else:
             return False
@@ -194,6 +232,7 @@ class FdepInterpreter(object):
 
           help                            Print this helpful message
           version                         Print the currently installed version
+          init <envs...>                  Create fdep.yml with specified environments
           install                         Install dependencies for the project
           upload <local path>             Upload a file to the storage
           add <local path> <remote path>  Add a new dependency to the project
@@ -211,25 +250,33 @@ class FdepInterpreter(object):
         cmd = argv[0]
         args = argv[1:]
 
-        # Configuration validity check
-        if not self.check():
-            return False
+        print('[' + Fore.CYAN + '*' + Fore.RESET +
+              '] Current environment: {}'.format(self.env))
 
-        print('[' + Fore.CYAN + '*' + Fore.RESET + '] Current environment: {}'.format(self.env))
-
-        if cmd == 'install':
+        if cmd == 'init':
+            return self.initialize_project(*args)
+        elif cmd == 'install':
+            if not self.check():
+                return False
             return self.install_dependencies(*args)
         elif cmd == 'upload':
+            if not self.check():
+                return False
             return self.upload_dependencies(*args)
         elif cmd == 'add':
+            if not self.check():
+                return False
             return self.add_dependency(*args)
         elif cmd == 'rm':
+            if not self.check():
+                return False
             return self.rm_dependency(*args)
         elif cmd == 'help':
             return self.print_usage()
         elif cmd == 'version':
             return self.print_version()
         else:
-            sys.stderr.write(Fore.RED + 'Unrecognized command: {}\n'.format(cmd) + Fore.RESET)
+            sys.stderr.write(
+                Fore.RED + 'Unrecognized command: {}\n'.format(cmd) + Fore.RESET)
             self.print_usage()
             return False

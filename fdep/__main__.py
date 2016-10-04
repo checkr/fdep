@@ -7,10 +7,6 @@ import os
 def main():
     config_path = FdepConfig.find_local_config()
     env = os.environ.get('ENV', 'default')
-    if not config_path:
-        sys.stderr.write("Missing fdep.yml\n")
-        return 2
-
     interpreter = FdepInterpreter(env, config_path)
     return 0 if interpreter.run(sys.argv[1:]) else 1
 
