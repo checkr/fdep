@@ -29,6 +29,14 @@ Just type the following command line:
 pip install fdep
 ```
 
+Or, you can install fdep from source:
+
+```
+git clone git@github.com:checkr/fdep.git
+cd fdep
+python setup.py install
+```
+
 ## Installing your dependencies
 
 Once you download a machine learning project that uses fdep, just type the following:
