@@ -7,6 +7,20 @@ fdep is a simple, easy-to-use, production-ready command line/library written in 
 
 Currently it supports: AWS S3, HTTP/HTTPS
 
+```
+Usage: fdep <command> <arguments>
+
+fdep installs miscellaneous file dependencies. e.g. datasets, etc.
+
+  help                            Print this helpful message
+  version                         Print the currently installed version
+  init <envs...>                  Create fdep.yml with specified environments
+  install                         Install dependencies for the project
+  upload <local path>             Upload a file to the storage
+  add <local path> <remote path>  Add a new dependency to the project
+  rm <local path>                 Remove a dependency in the project
+```
+
 ## How to install
 
 Just type the following command line:
@@ -31,7 +45,7 @@ You can add a new dataset/file dependency for your machine learning project by t
 fdep add data/wordlist.txt http://www-personal.umich.edu/~jlawler/wordlist
 ```
 
-NOTE: `fdep` will create the `fdep.yml` for you if you don't have it
+NOTE: `fdep init` will create the `fdep.yml` for you if you don't have it
 
 
 ## Uploading new datasets or trained models to production
