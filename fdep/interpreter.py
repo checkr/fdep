@@ -42,13 +42,15 @@ class FdepInterpreter(object):
         config_dict = {}
         for env in args:
             config_dict[env] = {}
-        self.config_path = os.path.abspath('./fdep.yml')
+        self.config_path = os.path.abspath(os.path.join(self.current_path, './fdep.yml'))
         self.fdep = FdepConfig(config_dict)
         self.fdep.save(self.config_path)
         self.configure()
         print('Initialized at {}'.format(self.config_path))
 
     def _install_one_dep(self, local_path, source):
+        local_path = os.path.join(self.base_dir, local_path)
+
         try:
             os.makedirs(os.path.dirname(local_path), exist_ok=True)
         except:
@@ -110,6 +112,8 @@ class FdepInterpreter(object):
         return True
 
     def _upload_one_dep(self, local_path):
+        local_path = os.path.join(self.base_dir, local_path)
+
         try:
             source = self.fdep.config[self.env][local_path]
         except KeyError:
