@@ -6,11 +6,11 @@
   <a href="https://circleci.com/gh/checkr/fdep/tree/master">
     <img src="https://circleci.com/gh/checkr/fdep/tree/master.svg?style=shield&circle-token=290f477815cb38bc3b464699362e6cae6880823f" alt="CircleCI">
   </a>
-  <a href="https://circleci.com/gh/checkr/fdep/tree/master">
-    <img src="https://img.shields.io/badge/python-2,%203,%20pypy-green.svg?style=flat" alt="Supported Versions">
-  </a>
   <a href="https://codeclimate.com/repos/57f44216f08b620069002513/coverage">
     <img src="https://codeclimate.com/repos/57f44216f08b620069002513/badges/c7be057ea63371be9b4d/coverage.svg" alt="Test Coverage">
+  </a>
+  <a href="https://codeclimate.com/repos/57f44216f08b620069002513/feed">
+    <img src="https://codeclimate.com/repos/57f44216f08b620069002513/badges/c7be057ea63371be9b4d/gpa.svg" alt="Code Climate">
   </a>
 </h1>
 
