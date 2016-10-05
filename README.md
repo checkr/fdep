@@ -9,7 +9,9 @@
   <a href="https://circleci.com/gh/checkr/fdep/tree/master">
     <img src="https://img.shields.io/badge/python-2,%203,%20pypy-green.svg?style=flat" alt="Supported Versions">
   </a>
-  
+  <a href="https://codeclimate.com/repos/57f44216f08b620069002513/coverage">
+    <img src="https://codeclimate.com/repos/57f44216f08b620069002513/badges/c7be057ea63371be9b4d/coverage.svg" alt="Test Coverage">
+  </a>
 </h1>
 
 fdep is a simple, easy-to-use, production-ready command line/library written in Python to download datasets, misc. files for your machine learning projects.
