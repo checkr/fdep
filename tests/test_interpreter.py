@@ -3,49 +3,49 @@ from fdep.config import FdepConfig
 
 
 def test_run_help(fdep_yml):
-    ipt = FdepInterpreter('default', fdep_yml)
+    ipt = FdepInterpreter('development', fdep_yml)
     assert ipt.run(['help'])
 
 
 def test_run_version(fdep_yml):
-    ipt = FdepInterpreter('default', fdep_yml)
+    ipt = FdepInterpreter('development', fdep_yml)
     assert ipt.run(['version'])
 
 
 def test_run_init(test_project_path, empty_fdep_yml):
-    ipt = FdepInterpreter('default', None, current_path=test_project_path)
+    ipt = FdepInterpreter('development', None, current_path=test_project_path)
     assert ipt.run(['init'])
 
     with open(empty_fdep_yml) as f:
-        assert f.read() == 'default: {}\n'
+        assert f.read() == 'development: {}\n'
 
 
 def test_run_add(fdep_yml, test_project_path, mocker):
     requests_get = mocker.patch('requests.get')
 
-    ipt = FdepInterpreter('default', fdep_yml, current_path=test_project_path)
+    ipt = FdepInterpreter('development', fdep_yml, current_path=test_project_path)
     assert ipt.run(['add', 'run_add.txt', 'http://example.com/run_add.txt'])
-    assert ipt.fdep.config['default'].get('run_add.txt') is not None
+    assert ipt.fdep.config['development'].get('run_add.txt') is not None
     requests_get.assert_called_with(
         'http://example.com/run_add.txt', stream=True)
 
     reloaded_fdep = FdepConfig.load(fdep_yml)
-    assert reloaded_fdep.config['default'].get('run_add.txt') is not None
+    assert reloaded_fdep.config['development'].get('run_add.txt') is not None
 
 
 def test_run_rm(fdep_yml, test_project_path):
-    ipt = FdepInterpreter('default', fdep_yml, current_path=test_project_path)
+    ipt = FdepInterpreter('development', fdep_yml, current_path=test_project_path)
     assert ipt.run(['rm', 'data/wordlist.txt'])
-    assert ipt.fdep.config['default'].get('data/wordlist.txt') is None
+    assert ipt.fdep.config['development'].get('data/wordlist.txt') is None
 
     reloaded_fdep = FdepConfig.load(fdep_yml)
-    assert reloaded_fdep.config['default'].get('data/wordlist.txt') is None
+    assert reloaded_fdep.config['development'].get('data/wordlist.txt') is None
 
 
 def test_run_install_via_http(fdep_yml, test_project_path, mocker):
     requests_get = mocker.patch('requests.get')
 
-    ipt = FdepInterpreter('default', fdep_yml, current_path=test_project_path)
+    ipt = FdepInterpreter('development', fdep_yml, current_path=test_project_path)
     assert ipt.run(['install'])
 
     requests_get.assert_called_with(
@@ -77,7 +77,7 @@ def test_run_install_via_unsupported_backend(fdep_yml, test_project_path):
 
 
 def test_run_upload_via_http(fdep_yml, test_project_path):
-    ipt = FdepInterpreter('default', fdep_yml, current_path=test_project_path)
+    ipt = FdepInterpreter('development', fdep_yml, current_path=test_project_path)
     assert not ipt.run(['upload', 'data/wordlist.txt'])
 
 

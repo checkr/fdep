@@ -9,8 +9,8 @@ class FdepConfig(object):
     def __init__(self, config_dict):
         """Initialize a fdep configuration object with a dictionary.
 
-        >>> fdep = FdepConfig({"default": {"data.txt": "s3://test/data.txt"}})
-        >>> fdep.config["default"]["data.txt"]
+        >>> fdep = FdepConfig({"development": {"data.txt": "s3://test/data.txt"}})
+        >>> fdep.config["development"]["data.txt"]
         's3://test/data.txt'
         """
         self.config = config_dict

@@ -17,7 +17,7 @@ def empty_fdep_yml(test_project_path):
 def fdep_yml(empty_fdep_yml):
     with open(empty_fdep_yml, 'w') as f:
         f.write(dedent("""\
-        default:
+        development:
           data/wordlist.txt: http://www-personal.umich.edu/~jlawler/wordlist
         production:
           data/wordlist.txt: s3://my-ml-project/modified-wordlist.txt
