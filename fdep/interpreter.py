@@ -151,7 +151,7 @@ class FdepInterpreter(object):
         print(self.messages.UPLOADING.format(local_path, source))
 
         backend_bag = StorageBackend.create(self, source)
-        self.try_running_backend(
+        return self.try_running_backend(
             backend_bag, lambda backend: backend.put_from(real_local_path))
 
     def check(self):
