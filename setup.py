@@ -8,7 +8,7 @@ except:
 
 setup(
     name="fdep",
-    packages=['fdep'],
+    packages=['fdep', 'fdep.backends'],
     version=__VERSION__,
     author="Checkr",
     author_email="eng@checkr.com",
