@@ -8,6 +8,7 @@ from fdep import __VERSION__, messages
 from fdep.backends import StorageBackend
 from fdep.backends.http import HTTPBackend
 from fdep.backends.s3 import S3Backend
+from fdep.backends.gspreadsheet import GSpreadsheetBackend
 from fdep.config import FdepConfig
 from tqdm import tqdm
 
