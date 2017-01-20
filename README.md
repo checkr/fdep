@@ -74,6 +74,8 @@ You can add a new dataset/file dependency for your machine learning project by t
 
 ```
 fdep add data/wordlist.txt http://www-personal.umich.edu/~jlawler/wordlist
+fdep add data/weights.npz s3://ml-datastore/weights.npz
+fdep add data/training.csv gspreadsheet://spreadsheet-key
 ```
 
 NOTE: `fdep init` will create the `fdep.yml` for you if you don't have it
