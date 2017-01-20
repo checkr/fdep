@@ -16,7 +16,16 @@
 
 fdep is a simple, easy-to-use, production-ready command line/library written in Python to download datasets, misc. files for your machine learning projects.
 
-Currently it supports: AWS S3, HTTP/HTTPS
+<table>
+  <tr>
+    <td>Supported versions</td>
+    <td>Python 2.7, 3.0+, PyPy</td>
+  </tr>
+  <tr>
+    <td>Available backends</td>
+    <td>AWS S3, HTTP/HTTPS</td>
+  </tr>
+</table>
 
 ```
 Usage: fdep <command> <arguments>
