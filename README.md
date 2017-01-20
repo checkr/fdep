@@ -25,10 +25,13 @@ fdep installs miscellaneous file dependencies. e.g. datasets, etc.
 
   help                            Print this helpful message
   version                         Print the currently installed version
-  init <envs...>                  Create fdep.yml with specified environments
+  init <envs...>                  Create fdep.yml with specified
+                                  environments
   install                         Install dependencies for the project
   upload <local path>             Upload a file to the storage
-  add <local path> <remote path>  Add a new dependency to the project
+  commit <local path>             Upload a file to the storage with a versioning tag
+  add <local path> <remote path> [<version>]
+                                  Add a new dependency to the project
   rm <local path>                 Remove a dependency in the project
 ```
 
@@ -75,3 +78,27 @@ Once you produced a new dataset for your batch trainer on production, or a train
 ENV=production fdep upload data/training.csv
 ENV=production fdep upload data/classifier.pkl
 ```
+
+Or, if you want to tie it to your VCS, you can version control the files with the following:
+
+```
+ENV=production fdep commit data/training.csv
+ENV=production fdep commit data/classifier.pkl
+```
+
+This will upload files with a versioning postfix to your backend. You can now commit your changed fdep.yml.
+
+
+## FAQ
+
+> Q. How do I set up my S3 backend?
+
+You can set up [aws-cli](https://aws.amazon.com/cli/) on your machine, or use the environment variables `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
+
+> Q. I uploaded my newly changed file, and my old program that relied on the previous file now fails. How can I solve this problem?
+
+You can use `fdep commit <file name>` to do a simple versioning. It'll append a version number to the filename, so in the backend, it's all separate files. Also, the fdep.yml file will be updated, so your version control software can help you pick up the right version.
+
+> Q. Hey, I found a bug. How can I contribute to this project?
+
+fdep is in its early stage, and there are so many things to be done! Please fork this Github project and make a pull request. Any feedback is appreciated!
