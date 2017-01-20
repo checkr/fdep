@@ -1,10 +1,6 @@
 from setuptools import setup
 from fdep import __VERSION__
 
-try:
-    ldsc = open("README.md").read()
-except:
-    ldsc = ""
 
 setup(
     name="fdep",
@@ -15,7 +11,7 @@ setup(
     url="http://github.com/checkr/fdep",
     license="MIT LICENSE",
     description="Fdep is a simple, easy-to-use, production-ready tool/library written in Python to download datasets, misc. files for your machine learning projects.",
-    long_description=ldsc,
+    long_description="For more details, go to http://github.com/checkr/fdep",
     entry_points={
         'console_scripts': ['fdep=fdep.__main__:main']
     },
