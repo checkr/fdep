@@ -1,12 +1,15 @@
 """Interpret configuration files and execute."""
-from fdep.config import FdepConfig
+import binascii
+import os
+import sys
+from hashlib import sha1
+
+from fdep import __VERSION__, messages
 from fdep.backends import StorageBackend
 from fdep.backends.http import HTTPBackend
 from fdep.backends.s3 import S3Backend
-from fdep import messages, __VERSION__
+from fdep.config import FdepConfig
 from tqdm import tqdm
-import sys
-import os
 
 
 class FdepInterpreter(object):
@@ -77,6 +80,16 @@ class FdepInterpreter(object):
         print(self.messages.INITIALIZED.format(self.config_path))
         return True
 
+    def get_sha1sum(self, path):
+        """Return a hexdigested SHA1 sum for the file path."""
+        if not os.path.exists(path):
+            return None
+
+        with open(path, 'rb') as f:
+            m = sha1()
+            m.update(f.read())
+        return m.hexdigest()
+
     def get_real_local_path(self, local_path):
         """Get the real path of an input local path."""
         return os.path.join(self.base_dir, local_path)
@@ -99,7 +112,10 @@ class FdepInterpreter(object):
             return
 
         try:
-            return env[local_path]
+            if isinstance(env[local_path], str):
+                return env[local_path], None
+            else:
+                return env[local_path]['source'], env[local_path].get('sha1sum')
         except KeyError:
             sys.stderr.write(
                 self.messages.ERROR_NO_SUCH_FILE_IN_CONFIG.format(local_path))
@@ -119,40 +135,80 @@ class FdepInterpreter(object):
             return False
         return True
 
-    def install_dependency(self, local_path, source):
+    def install_dependency(self, local_path, source, sha1sum=None, version=None):
         """Install one dependency."""
-        local_path = self.get_real_local_path(local_path)
+        local_path, alias = self.get_real_local_path(local_path), local_path
         self.create_directory(os.path.dirname(local_path))
+        source_to_use = source
+
+        if version:
+            source_to_use += '_{}'.format(version)
 
         if os.path.exists(local_path):
-            print(self.messages.ALREADY_INSTALLED.format(local_path))
+            new_sha1sum = self.get_sha1sum(local_path)
+            if sha1sum is not None and sha1sum != new_sha1sum:
+                print(self.messages.FILE_CHANGED.format(local_path))
+            else:
+                print(self.messages.ALREADY_INSTALLED.format(local_path))
             return True
 
-        print(self.messages.INSTALLING.format(local_path, source))
+        print(self.messages.INSTALLING.format(local_path, source_to_use))
 
-        backend_bag = StorageBackend.create(self, source)
-        return self.try_running_backend(
+        backend_bag = StorageBackend.create(self, source_to_use)
+        result = self.try_running_backend(
             backend_bag, lambda backend: backend.get_to(local_path))
 
-    def upload_dependency(self, local_path):
+        new_sha1sum = self.get_sha1sum(self.get_real_local_path(local_path))
+        if sha1sum is not None and sha1sum != new_sha1sum:
+            sys.stderr.write(
+                self.messages.ERROR_WRONG_SHA1SUM.format(sha1sum, new_sha1sum))
+            return False
+        elif sha1sum is None:
+            self.fdep.config[self.env][alias] = {
+                'source': source,
+                'sha1sum': new_sha1sum
+            }
+            if version:
+                self.fdep.config[self.env][alias]['version'] = version
+            self.fdep.save(self.config_path)
+        return result
+
+    def upload_dependency(self, local_path, versioning=False):
         """Upload one dependency."""
         local_path = os.path.relpath(
             os.path.join(self.current_path, local_path),
             self.base_dir
         )
         real_local_path = self.get_real_local_path(local_path)
-        source = self.get_source_from_config(local_path)
+        source, sha1sum = self.get_source_from_config(local_path)
+        new_sha1sum = self.get_sha1sum(real_local_path)
+        source_to_use = source
+
+        if versioning:
+            version = binascii.hexlify(os.urandom(16)).decode()
+            source_to_use += '_{}'.format(version)
 
         if not os.path.exists(real_local_path):
             sys.stderr.write(
                 self.messages.ERROR_NO_SUCH_FILE_ON_DISK.format(real_local_path))
             return False
 
-        print(self.messages.UPLOADING.format(local_path, source))
+        print(self.messages.UPLOADING.format(local_path, source_to_use))
 
-        backend_bag = StorageBackend.create(self, source)
-        return self.try_running_backend(
+        backend_bag = StorageBackend.create(self, source_to_use)
+        result = self.try_running_backend(
             backend_bag, lambda backend: backend.put_from(real_local_path))
+
+        if result:
+            self.fdep.config[self.env][local_path] = {
+                'source': source,
+                'sha1sum': new_sha1sum
+            }
+            if versioning:
+                self.fdep.config[self.env][local_path]['version'] = version
+                print(self.messages.NEW_VERSION_UPLOADED.format(version, local_path))
+            self.fdep.save(self.config_path)
+        return result
 
     def check(self):
         """Check if the configuration file is valid."""
@@ -171,13 +227,24 @@ class FdepInterpreter(object):
 
         This can be invoked by `fdep install`.
         """
-        for local_path, source in self.fdep.config[self.env].items():
-            if not self.install_dependency(local_path, source):
+        for local_path, source_obj in self.fdep.config[self.env].items():
+            if not isinstance(source_obj, str):
+                # New format with sha1sum
+                sha1sum = source_obj.get('sha1sum')
+                version = source_obj.get('version')
+                source = source_obj.get('source')
+            else:
+                source = source_obj
+                sha1sum = None
+                version = None
+
+            if not self.install_dependency(local_path, source, version=version, sha1sum=sha1sum):
                 sys.stderr.write(self.messages.ERROR_WHILE_INSTALLING)
                 return False
+
         return True
 
-    def upload_dependencies(self, *local_paths):
+    def upload_dependencies(self, *local_paths, versioning=False):
         """Upload dependencies specified in the configuration file.
 
         This can be invoked by `fdep upload`.
@@ -187,12 +254,12 @@ class FdepInterpreter(object):
             return False
 
         for local_path in local_paths:
-            if not self.upload_dependency(local_path):
+            if not self.upload_dependency(local_path, versioning=versioning):
                 sys.stderr.write(self.messages.ERROR_WHILE_UPLOADING)
                 return False
         return True
 
-    def add_dependency(self, alias, source):
+    def add_dependency(self, alias, source, version=None):
         """Add a new dependency to the configuration file.
 
         This can be invoked by `fdep add`.
@@ -200,7 +267,12 @@ class FdepInterpreter(object):
         alias = os.path.join(self.current_path, alias)
         abs_alias = os.path.relpath(alias, self.base_dir)
         if self.install_dependency(abs_alias, source):
-            self.fdep.config[self.env][abs_alias] = source
+            self.fdep.config[self.env][alias] = {
+                'source': source,
+                'sha1sum': self.get_sha1sum(abs_alias)
+            }
+            if version:
+                self.fdep.config[self.env][alias]['version'] = version
             self.fdep.save(self.config_path)
             return True
         else:
@@ -253,6 +325,10 @@ class FdepInterpreter(object):
             if not self.check():
                 return False
             return self.upload_dependencies(*args)
+        elif cmd == 'commit':
+            if not self.check():
+                return False
+            return self.upload_dependencies(*args, versioning=True)
         elif cmd == 'add':
             if not self.check():
                 return False

@@ -17,7 +17,9 @@ class FdepDefaultMessages(object):
                                       environments
       install                         Install dependencies for the project
       upload <local path>             Upload a file to the storage
-      add <local path> <remote path>  Add a new dependency to the project
+      commit <local path>             Upload a file to the storage with a versioning tag
+      add <local path> <remote path> [<version>]
+                                      Add a new dependency to the project
       rm <local path>                 Remove a dependency in the project
     """)
 
@@ -30,7 +32,15 @@ class FdepDefaultMessages(object):
     ALREADY_INITIALIZED =\
         "{RED}Already initialized.\n{RESET}".format(**COLOR_TABLE)
     ALREADY_INSTALLED =\
-        "[{BLUE}*{RESET}] {{}} is already installed.".format(**COLOR_TABLE)
+        "[{BLUE}*{RESET}] {BLUE}{{}}{RESET} is already installed.".format(**COLOR_TABLE)
+    FILE_CHANGED =\
+        ("[{BLUE}*{RESET}] {BLUE}{{}}{RESET} is already installed. But, it looks like it was changed " +\
+        "since it was downloaded. Upload your file, or delete the file and " +\
+        "re-install it.").format(**COLOR_TABLE)
+
+    NEW_VERSION_UPLOADED =\
+        ("New version {{}} of {BLUE}{{}}{RESET} is uploaded. Make sure you commit the changed fdep.yml" +\
+        "on your version control software as well.").format(**COLOR_TABLE)
 
     INITIALIZED =\
         "Initialized at {}"
@@ -60,5 +70,7 @@ class FdepDefaultMessages(object):
         "{RED}No such file on the disk: {{}}{RESET}\n".format(**COLOR_TABLE)
     ERROR_UNSUPPORTED_BACKEND =\
         "{RED}Unsupported backend: {{}}{RESET}\n".format(**COLOR_TABLE)
+    ERROR_WRONG_SHA1SUM =\
+        "{RED}Wrong SHA1SUM: {{}} != {{}}{RESET}\n".format(**COLOR_TABLE)
     ERROR_OTHER =\
         "{RED}{{}}{RESET}\n".format(**COLOR_TABLE)
