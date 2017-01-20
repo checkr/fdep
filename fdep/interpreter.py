@@ -244,11 +244,13 @@ class FdepInterpreter(object):
 
         return True
 
-    def upload_dependencies(self, *local_paths, versioning=False):
+    def upload_dependencies(self, *local_paths, **kwargs):
         """Upload dependencies specified in the configuration file.
 
         This can be invoked by `fdep upload`.
         """
+        versioning = kwargs.get('versioning')
+
         if not len(local_paths):
             sys.stderr.write(self.messages.ERROR_NO_FILES_TO_UPLOAD)
             return False
