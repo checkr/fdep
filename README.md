@@ -23,7 +23,7 @@ fdep is a simple, easy-to-use, production-ready command line/library written in 
   </tr>
   <tr>
     <td>Available backends</td>
-    <td>AWS S3, HTTP/HTTPS</td>
+    <td>AWS S3, HTTP/HTTPS*, Google Spreadsheets**</td>
   </tr>
 </table>
 
@@ -111,3 +111,9 @@ You can use `fdep commit <file name>` to do a simple versioning. It'll append a 
 > Q. Hey, I found a bug. How can I contribute to this project?
 
 fdep is in its early stage, and there are so many things to be done! Please fork this Github project and make a pull request. Any feedback is appreciated!
+
+
+<div>
+    *, **: Uploading is not supported.<br />
+    **: Only for spreadsheets shared publicly. e.g. Public on the web, Anyone with the link
+</div>
