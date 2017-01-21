@@ -12,6 +12,9 @@
   <a href="https://codeclimate.com/repos/57f44216f08b620069002513/feed">
     <img src="https://codeclimate.com/repos/57f44216f08b620069002513/badges/c7be057ea63371be9b4d/gpa.svg" alt="Code Climate">
   </a>
+  <a href="https://pypi.python.org/pypi/fdep">
+    <img src="https://img.shields.io/pypi/dm/fdep.svg" alt="PyPI">
+  </a>
 </h1>
 
 fdep is a simple, easy-to-use, production-ready command line/library written in Python to download datasets, misc. files for your machine learning projects.
