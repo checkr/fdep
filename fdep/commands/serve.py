@@ -56,8 +56,12 @@ class ServeCommandRunner(SubcommandRunner, ConfigRequiredMixin):
         port = kwargs.get('port') or os.environ.get('PORT') or self.__class__.DEFAULT_PORT
         server_driver_name = kwargs.get('driver') or\
             os.environ.get('SERVER_DRIVER') or self.__class__.DEFAULT_DRIVER
+        username = kwargs.get('username') or os.environ.get('RPC_USERNAME')
+        password = kwargs.get('password') or os.environ.get('RPC_PASSWORD')
 
         kwargs['port'] = port
+        kwargs['username'] = username
+        kwargs['password'] = password
 
         # Ensure everything is installed safe and sound.
         if not self.root_runner.commands['install'].run():
@@ -71,7 +75,12 @@ class ServeCommandRunner(SubcommandRunner, ConfigRequiredMixin):
             server_driver = self.resolve_module(server_driver_name)
 
         integrations = []
-        # TODO
+        sentry_dsn = kwargs.get('sentry_dsn') or os.environ.get('SENTRY_DSN')
+        if sentry_dsn:
+            integrations.append(SentryIntegration(sentry_dsn))
+        fluentd_http_url = kwargs.get('fluentd_http_url') or os.environ.get('FLUENTD_HTTP_URL')
+        if fluentd_http_url:
+            integrations.append(FluentdHttpIntegration(fluentd_http_url))
 
         if server_driver_name != 'console':
             print(self.messages.SERVING.format(server_driver_name, python_module_name, port))

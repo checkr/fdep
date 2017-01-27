@@ -6,6 +6,10 @@ class RPCServer(object):
     __metaclass__ = ABCMeta
 
     @abstractmethod
+    def register_integrations(self, integrations):
+        pass
+
+    @abstractmethod
     def register_functions(self, func_pairs):
         pass
 
