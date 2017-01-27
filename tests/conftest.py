@@ -33,6 +33,15 @@ def fdep(test_project_path):
 
 
 @fixture
+def load_config(test_project_path):
+    from fdep.config import FdepConfig
+
+    def _func():
+        return FdepConfig.load(os.path.join(test_project_path, 'project', 'fdep.yml'))
+    return _func
+
+
+@fixture
 def mock_requests_get(mocker):
     return mocker.patch('requests.get')
 

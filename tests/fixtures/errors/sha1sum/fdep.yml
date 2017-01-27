@@ -1,0 +1,4 @@
+development:
+  data/wordlist.txt:
+    sha1sum: 648a6a6ffffdaa0badb23b8baf90b6168dd16b3a
+    source: s3://ml-datasets/wordlist.txt
