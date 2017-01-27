@@ -56,9 +56,6 @@ class XMLRPCRequestHandler(SimpleXMLRPCRequestHandler):
 class XMLRPCServer(RPCServer):
     """Implement a XMLRPC server."""
 
-    def register_integrations(self, integrations):
-        self.integrations = integrations
-
     def register_functions(self, func_pairs):
         self.func_pairs = func_pairs
 
@@ -70,7 +67,10 @@ class XMLRPCServer(RPCServer):
         server = SimpleXMLRPCServer(('0.0.0.0', kwargs['port']), requestHandler=XMLRPCRequestHandler)
 
         for name, func in self.func_pairs:
-            server.register_function(func, name=name)
+            server.register_function(
+                self.wrap_function(name, func),
+                name=name
+            )
         server.register_multicall_functions()
 
         try:

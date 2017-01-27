@@ -77,7 +77,12 @@ class ServeCommandRunner(SubcommandRunner, ConfigRequiredMixin):
         integrations = []
         sentry_dsn = kwargs.get('sentry_dsn') or os.environ.get('SENTRY_DSN')
         if sentry_dsn:
-            integrations.append(SentryIntegration(sentry_dsn))
+            try:
+                integrations.append(SentryIntegration(sentry_dsn))
+            except ImportError:
+                sys.stderr.write(
+                    self.messages.ERROR_NEED_TO_INSTALL_OPTIONAL.format('raven', 'Sentry')
+                )
         fluentd_http_url = kwargs.get('fluentd_http_url') or os.environ.get('FLUENTD_HTTP_URL')
         if fluentd_http_url:
             integrations.append(FluentdHttpIntegration(fluentd_http_url))

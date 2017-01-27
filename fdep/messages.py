@@ -79,6 +79,9 @@ class FdepDefaultMessages(object):
     ALREADY_INITIALIZED =\
         "{RED}✘{RESET} Already initialized.\n".format(**COLOR_TABLE)
 
+    ERROR_NEED_TO_INSTALL_OPTIONAL =\
+        ("{RED}✘{RESET} You need to install an optional dependency " +\
+        "{BLUE}{{}}{RESET} to use {{}}").format(**COLOR_TABLE)
     ERROR_NO_SUCH_MODULE =\
         "{RED}✘{RESET} Module {{}} cannot be loaded.\n".format(**COLOR_TABLE)
     ERROR_NO_FILES_TO_UPLOAD =\

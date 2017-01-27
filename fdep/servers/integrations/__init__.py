@@ -4,8 +4,8 @@ class Integration(object):
     def capture_exception(self, exc):
         pass
 
-    def before_function(self, func_name, args):
+    def before_function(self, func_name, args, kwargs):
         pass
 
-    def after_function(self, func_name, args, result):
+    def after_function(self, func_name, args, kwargs, result):
         pass
