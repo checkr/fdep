@@ -23,8 +23,10 @@ def parse_argv(argv):
     return args, kwargs
 
 
-def main(argv):
+def main(argv=None):
     """Implement the entry point of fdep."""
+    if argv is None:
+        argv = sys.argv
     root_path = FdepConfig.find_root_path() or os.getcwd()
     env = os.environ.get('ENV', 'development')
     config = FdepConfig.load(os.path.join(root_path, 'fdep.yml'))
