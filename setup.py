@@ -4,7 +4,7 @@ from fdep import __VERSION__
 
 setup(
     name="fdep",
-    packages=['fdep', 'fdep.backends'],
+    packages=['fdep', 'fdep.backends', 'fdep.commands', 'fdep.interfaces', 'fdep.servers'],
     version=__VERSION__,
     author="Checkr",
     author_email="eng@checkr.com",
