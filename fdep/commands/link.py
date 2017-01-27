@@ -4,7 +4,7 @@ from fdep.commands import ConfigRequiredMixin, SubcommandRunner
 
 
 class LinkCommandRunner(SubcommandRunner, ConfigRequiredMixin):
-    """Handle rename commands."""
+    """Handle link commands."""
     COMMAND_NAME = 'link'
 
     def run(self, *args, **kwargs):

@@ -4,7 +4,7 @@ from fdep.commands import ConfigRequiredMixin, SubcommandRunner
 
 
 class UnfreezeCommandRunner(SubcommandRunner, ConfigRequiredMixin):
-    """Handle fix commands."""
+    """Handle unfreeze commands."""
     COMMAND_NAME = 'unfreeze'
 
     def run(self, *args, **kwargs):

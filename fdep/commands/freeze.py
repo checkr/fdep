@@ -6,7 +6,7 @@ from fdep.utils import HashHelper
 
 
 class FreezeCommandRunner(SubcommandRunner, ConfigRequiredMixin):
-    """Handle fix commands."""
+    """Handle freeze commands."""
     COMMAND_NAME = 'freeze'
 
     def run(self, *args, **kwargs):

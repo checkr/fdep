@@ -10,7 +10,7 @@ def parse_argv(argv):
     argv = list(argv)
     args, kwargs = [], {}
 
-    for _ in range(len(argv)):
+    while len(argv):
         arg = argv.pop(0)
         if arg[0] == '-' and len(arg) >= 2:
             ind = 2 if arg[1] == '-' else 1

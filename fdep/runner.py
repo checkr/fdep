@@ -15,6 +15,7 @@ from fdep.commands.install import InstallCommandRunner
 from fdep.commands.link import LinkCommandRunner
 from fdep.commands.mv import MvCommandRunner
 from fdep.commands.rm import RmCommandRunner
+from fdep.commands.serve import ServeCommandRunner
 from fdep.commands.unfreeze import UnfreezeCommandRunner
 from fdep.commands.upload import UploadCommandRunner
 from fdep.commands.version import VersionCommandRunner
@@ -39,6 +40,7 @@ class FdepRunner(CommandRunner):
         CommitCommandRunner,
         UploadCommandRunner,
         LinkCommandRunner,
+        ServeCommandRunner,
     ]
     AVAILABLE_BACKENDS = [
         HTTPBackend,

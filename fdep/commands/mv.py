@@ -4,7 +4,7 @@ from fdep.commands import ConfigRequiredMixin, SubcommandRunner
 
 
 class MvCommandRunner(SubcommandRunner, ConfigRequiredMixin):
-    """Handle rename commands."""
+    """Handle mv commands."""
     COMMAND_NAME = 'mv'
 
     def run(self, *args, **kwargs):
