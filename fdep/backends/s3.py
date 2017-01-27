@@ -3,11 +3,13 @@ import os
 import boto3
 from fdep.backends import StorageBackend
 from fdep.utils import urlparse
+from threading import Lock
 
 
 class S3Backend(StorageBackend):
     """Implement AWS S3."""
     SCHEME_NAME = 's3'
+    BOTO_SESSION_LOCK = Lock()
 
     def _get_object(self, client, bucket, key):
         return client.get_object(Bucket=bucket, Key=key)
@@ -16,7 +18,12 @@ class S3Backend(StorageBackend):
         o = urlparse(self.url)
         bucket = o.netloc
         key = o.path[1:]
+
+        # Boto3 is not thread-safe
+        self.__class__.BOTO_SESSION_LOCK.acquire(True)
         client = boto3.client('s3')
+        self.__class__.BOTO_SESSION_LOCK.release()
+
         if local_path is not None:
             total_length = os.stat(local_path).st_size
         else:

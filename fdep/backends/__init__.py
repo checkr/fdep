@@ -33,7 +33,6 @@ class StorageBackend(object):
             try:
                 getattr(backend, func_name)(*args)
             except Exception as e:
-                raise
                 sys.stderr.write(root_runner.messages.ERROR_OTHER.format(e))
                 return False, b_type
         else:
