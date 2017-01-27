@@ -15,14 +15,26 @@ class FdepDefaultMessages(object):
 
       {GREEN}help{RESET}                            Print this helpful message
       {GREEN}version{RESET}                         Print the currently installed version
-      {GREEN}init{RESET} <envs...>                  Create fdep.yml with specified
-                                      environments
-      {GREEN}install{RESET}                         Install dependencies for the project
-      {GREEN}upload{RESET} <local path>             Upload a file to the storage
-      {GREEN}commit{RESET} <local path>             Upload a file to the storage with a versioning tag
-      {GREEN}add{RESET} <local path> <remote path> [<version>]
-                                      Add a new dependency to the project
-      {GREEN}rm{RESET} <local path>                 Remove a dependency in the project
+
+      {GREEN}init{RESET} <envs...>                  Create fdep.yml with specified environments
+
+      {GREEN}add{RESET} [--version=if_any] <local path> <remote path>
+      {GREEN}{RESET}                                Add a new dependency to the project
+      {GREEN}rm{RESET} <files..>                    Remove a dependency in the project
+      {GREEN}install{RESET} [<files...>]            Install dependencies for the project
+
+      {GREEN}upload{RESET} <files...>               Upload a file to the storage
+      {GREEN}commit{RESET} [--version=custom_version_tag] [<files...>]
+      {GREEN}{RESET}                                Upload a file to the storage with a postfix versioning.
+      {GREEN}link{RESET} [env:]<file> [env:]<file>  Link two files in the project.
+
+      {GREEN}freeze{RESET} <files..>                Create SHA1SUM for files and start maintaining it.
+      {GREEN}unfreeze{RESET} <files..>              Remove SHA1SUM for files and stop checking it.
+
+      {GREEN}serve{RESET} [--driver=console] [--port=8181] <python module path>
+      {GREEN}{RESET}                                Serve your project as a service.
+
+    For more details, please go to http://checkr.github.io/fdep.
     """.format(**COLOR_TABLE))
 
     FDEP_LOCAL_VERSION = " Local version: {GREEN}{{}}{RESET}".format(**COLOR_TABLE)

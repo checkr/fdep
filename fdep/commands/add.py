@@ -18,7 +18,7 @@ class AddCommandRunner(SubcommandRunner, ConfigRequiredMixin):
 
         self.entries[entry] = {"source": source}
 
-        version = kwargs.get('version') or kwargs.get('v')
+        version = kwargs.get('version')
 
         if version:
             self.entries[entry]['version'] = version
