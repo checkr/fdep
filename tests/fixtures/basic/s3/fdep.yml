@@ -1,0 +1,2 @@
+development:
+  data/wordlist.txt: s3://ml-datasets/wordlist.txt

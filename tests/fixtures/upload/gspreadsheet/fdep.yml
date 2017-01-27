@@ -1,0 +1,2 @@
+development:
+  data/wordlist.txt: gspreadsheet://test-id

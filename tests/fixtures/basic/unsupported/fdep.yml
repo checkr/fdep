@@ -1,0 +1,2 @@
+development:
+  data/wordlist.txt: unsupported://ml-datasets/wordlist.txt

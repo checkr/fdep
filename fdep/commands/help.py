@@ -7,3 +7,4 @@ class HelpCommandRunner(SubcommandRunner):
 
     def run(self, *args, **kwargs):
         print(self.messages.USAGE)
+        return True

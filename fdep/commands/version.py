@@ -25,3 +25,4 @@ class VersionCommandRunner(SubcommandRunner):
         if pkg_resources.parse_version(remote_version) > \
                 pkg_resources.parse_version(local_version):
             print(self.messages.FDEP_NEW_VERSION_EXISTS)
+        return True

@@ -46,12 +46,7 @@ class FdepConfig(object):
     """Serialize and unserialize fdep configuration file."""
 
     def __init__(self, root_path, config_dict):
-        """Initialize a fdep configuration object with a dictionary.
-
-        >>> fdep = FdepConfig({"development": {"data.txt": "s3://test/data.txt"}})
-        >>> fdep.config["development"]["data.txt"]
-        's3://test/data.txt'
-        """
+        """Initialize a fdep configuration object with a dictionary."""
         self.root_path = root_path
         self._config = config_dict
 
