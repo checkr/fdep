@@ -4,7 +4,7 @@
 
    fdep init [<envs...>]
 
-.. note:: If ``envs``` was not given, it'll default to ``development``.
+.. note:: If ``envs`` were not given, it'll default to ``development``.
 """
 from fdep.commands import SubcommandRunner
 from fdep.config import FdepConfig

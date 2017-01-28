@@ -4,7 +4,7 @@
 
    fdep upload <files...>
 
-.. note:: Note that just doing ``fdep upload`` doens't work. You have to specify the file names. We omitted that out in order to stress on uploading, since it can be destructive.
+.. note:: Note that just doing ``fdep upload`` doesn't work. You have to specify the file names. We omitted that out in order to emphasize uploading, since it can be destructive.
 """
 import os
 import sys
