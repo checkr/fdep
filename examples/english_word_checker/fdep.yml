@@ -1,0 +1,7 @@
+development:
+  data/pride-and-prejudice.txt: https://www.gutenberg.org/files/1342/1342-0.txt
+  data/wordlist.txt: &id001
+    source: s3://my-nlp-project/wordlist.txt
+    version: a62dc9cd4cbf93b805bf363a6df1d9c4
+production:
+  data/wordlist.txt: *id001
