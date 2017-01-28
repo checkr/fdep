@@ -1,3 +1,10 @@
+"""Print a helpful usage.
+
+.. code:: bash
+
+   fdep help
+
+"""
 from fdep.commands import SubcommandRunner
 
 

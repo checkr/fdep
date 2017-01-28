@@ -1,3 +1,26 @@
+"""Serve your model as a service.
+
+.. code:: bash
+
+   fdep serve [--driver=console] [--port=8181] <python module path>
+
+
+Drivers
+~~~~~~~
+
++---------+-----------------------------------------------------+--------------------------+
+|Driver   | Description                                         | Options                  |
++=========+=====================================================+==========================+
+| console | a simple command line interface for testing the     | ``--func=func_name``     |
+|         | model locally.                                      |                          |
++---------+-----------------------------------------------------+--------------------------+
+| xmlrpc  | a XMLRPC server driver.                             | ``--port=port``          |
+|         |                                                     | ``--username``           |
+|         |                                                     | ``--password``           |
+|         |                                                     | ``--sentry_dsn``         |
+|         |                                                     | ``--fluentd_http_url``   |
++---------+-----------------------------------------------------+--------------------------+
+"""
 import os
 import sys
 

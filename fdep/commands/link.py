@@ -1,3 +1,11 @@
+"""Link two entries in the ``fdep.yml`` file.
+
+.. code:: bash
+
+   fdep link [env:]<file> [env:]<file>
+
+By doing this, you can have the same configuration in two different environments.
+"""
 import sys
 
 from fdep.commands import ConfigRequiredMixin, SubcommandRunner

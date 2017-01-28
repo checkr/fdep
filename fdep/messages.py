@@ -21,10 +21,11 @@ class FdepDefaultMessages(object):
       {GREEN}add{RESET} [--version=if_any] <local path> <remote path>
       {GREEN}{RESET}                                Add a new dependency to the project
       {GREEN}rm{RESET} <files..>                    Remove a dependency in the project
+      {GREEN}mv{RESET} <file 1> <file 2>            Move a dependency in the project
       {GREEN}install{RESET} [<files...>]            Install dependencies for the project
 
       {GREEN}upload{RESET} <files...>               Upload a file to the storage
-      {GREEN}commit{RESET} [--version=custom_version_tag] [<files...>]
+      {GREEN}commit{RESET} [--version=custom_version_tag] <files...>
       {GREEN}{RESET}                                Upload a file to the storage with a postfix versioning.
       {GREEN}link{RESET} [env:]<file> [env:]<file>  Link two files in the project.
 

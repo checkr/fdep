@@ -1,3 +1,12 @@
+"""Unfreeze a file.
+
+.. code:: bash
+
+   fdep unfreeze <files...>
+
+It removes the SHA1SUM for a file in the ``fdep.yml`` file.
+"""
+
 import sys
 
 from fdep.commands import ConfigRequiredMixin, SubcommandRunner

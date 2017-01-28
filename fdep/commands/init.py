@@ -1,3 +1,11 @@
+"""Initialize a new fdep project.
+
+.. code:: bash
+
+   fdep init [<envs...>]
+
+.. note:: If ``envs``` was not given, it'll default to ``development``.
+"""
 from fdep.commands import SubcommandRunner
 from fdep.config import FdepConfig
 

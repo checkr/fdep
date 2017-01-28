@@ -1,3 +1,9 @@
+"""Install dependencies for the project.
+
+.. code:: bash
+
+   fdep install [<files...>]
+"""
 import os
 import sys
 import time

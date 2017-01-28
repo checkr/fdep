@@ -1,3 +1,9 @@
+"""Integrate Sentry with fdep.
+
+Pass the ``--sentry_dsn=http://..`` option or add the ``SENTRY_DSN`` environment variable when you run ``fdep serve``.
+"""
+
+
 from fdep.servers.integrations import Integration
 
 

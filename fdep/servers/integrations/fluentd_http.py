@@ -1,3 +1,17 @@
+"""Integrate Fluentd with fdep.
+
+Pass the ``--fluentd_http_url=http://..`` option or add the ``FLUENTD_HTTP_URL`` environment variable when you run ``fdep serve``.
+
+
+The source for the integration in your fluentd service should be like this:
+
+.. code:: xml
+
+   <source>
+     @type http
+     format json
+   </source>
+"""
 import json
 import sys
 

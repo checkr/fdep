@@ -1,3 +1,9 @@
+"""Print local and recent versions.
+
+.. code:: bash
+
+   fdep version
+"""
 import pkg_resources
 import requests
 from fdep import __VERSION__

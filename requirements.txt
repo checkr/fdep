@@ -3,6 +3,7 @@ boto3
 requests
 colorama
 tqdm
+raven
 
 pytest
 pytest-cov
@@ -11,3 +12,6 @@ pytest-blockage
 
 tox
 tox-pyenv
+
+sphinx
+sphinx_rtd_theme

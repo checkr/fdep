@@ -1,3 +1,11 @@
+"""Upload the file with a version tag.
+
+.. code:: bash
+
+   fdep commit [--version=custom_version_tag] <files...>
+
+.. note:: This adds `version` in the entry in the ``fdep.yml`` file.
+"""
 import sys
 
 from fdep.commands import ConfigRequiredMixin, SubcommandRunner

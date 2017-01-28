@@ -2,7 +2,7 @@ from abc import abstractmethod, ABCMeta
 
 
 class RPCServer(object):
-    """Implement an interface for servers."""
+    """Implement an interface for RPC servers."""
     __metaclass__ = ABCMeta
 
     def __init__(self):
@@ -12,15 +12,19 @@ class RPCServer(object):
         self.integrations = integrations
 
     @abstractmethod
-    def register_integrations(self, integrations):
-        pass
-
-    @abstractmethod
     def register_functions(self, func_pairs):
+        """Register functions for the server.
+
+        :param list func_pairs: A list of tuples (function_name, function)
+        """
         pass
 
     @abstractmethod
     def serve_forever(self, **kwargs):
+        """Serve forever.
+
+        :param int port: A port number
+        """
         pass
 
     def wrap_function(self, name, func):

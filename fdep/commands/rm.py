@@ -1,3 +1,9 @@
+"""Remove a dependency in the project.
+
+.. code:: bash
+
+   fdep rm <files...>
+"""
 import sys
 
 from fdep.commands import ConfigRequiredMixin, SubcommandRunner

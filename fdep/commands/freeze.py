@@ -1,3 +1,11 @@
+"""Freeze a file with a SHA1SUM.
+
+.. code:: bash
+
+   fdep freeze <files...>
+
+Once you freeze a file, fdep will check the file's sha1sum every download, to make sure your model is always reproducible.
+"""
 import os
 import sys
 

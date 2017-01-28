@@ -1,3 +1,9 @@
+"""Rename a dependency in the project.
+
+.. code:: bash
+
+   fdep mv <file 1> <file 2>
+"""
 import sys
 
 from fdep.commands import ConfigRequiredMixin, SubcommandRunner

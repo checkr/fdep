@@ -1,3 +1,12 @@
+"""Add a new file to the ``fdep.yml`` file.
+
+.. code:: bash
+
+   fdep add [--version=if_any] <local path> <remote path>
+
+.. note:: This doesn't download the file. use ``fdep install`` to download the files.
+"""
+
 import sys
 
 from fdep.commands import ConfigRequiredMixin, SubcommandRunner
