@@ -40,11 +40,11 @@ Done! Make sure you commit your ``fdep.yml`` on git, so that the version you jus
 
    git commit -m "Update the labeled data" fdep.yml
 
-From this on, you can follow the software practice you normally do or your company does, such as making a pull request on Github for code review, etc.
+From here, you can follow the software practice you normally do or your company does, such as making a pull request on Github for code review, etc.
 
 .. note::
 
-   If you are getting errors, probably you haven't set up ``aws-cli`` on your machine. You can go to this webpage and learn how to set up ``aws-cli``: http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-set-up.html
+   If you are getting errors, you probably haven't set up ``aws-cli`` on your machine. You can go to this webpage and learn how to set up ``aws-cli``: http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-set-up.html
 
 .. note::
 

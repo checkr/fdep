@@ -1,4 +1,4 @@
-"""Print a helpful usage.
+"""Print a helpful message.
 
 .. code:: bash
 

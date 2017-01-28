@@ -1,7 +1,7 @@
 A Software Engineer
 ===================
 
-Test what your data scientist developed, and extend fdep.
+Test what your data scientist developed and extend fdep.
 
 Install Their Machine Learning Project and Get It Running
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -20,7 +20,7 @@ You can extend fdep to use different protocols to serve the model.
 .. autoclass:: fdep.servers.RPCServer
     :members: register_functions, serve_forever
 
-Extend the above class in your project and do simply:
+Extend the above class in your project and simply do the following:
 
 .. code:: bash
 
