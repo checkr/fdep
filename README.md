@@ -17,7 +17,7 @@
   </a>
 </h1>
 
-fdep is a simple, easy-to-use, production-ready command line/library written in Python to download datasets, misc. files for your machine learning projects.
+fdep is a framework-agnostic, transport-agnostic, extensible command line tool to shape workflows between machine learning experts and others.
 
 <table>
   <tr>
