@@ -28,6 +28,7 @@ from fdep.commands import ConfigRequiredMixin, SubcommandRunner
 from fdep.servers.console import ConsoleServer
 from fdep.servers.integrations.fluentd_http import FluentdHttpIntegration
 from fdep.servers.integrations.sentry import SentryIntegration
+from fdep.servers.jsonrpc import JSONRPCServer
 from fdep.servers.xmlrpc import XMLRPCServer
 
 
@@ -42,6 +43,7 @@ class ServeCommandRunner(SubcommandRunner, ConfigRequiredMixin):
     KNOWN_DRIVERS = {
         'console': ConsoleServer,
         'xmlrpc': XMLRPCServer,
+        'jsonrpc': JSONRPCServer,
     }
 
     def resolve_module(self, module_name):

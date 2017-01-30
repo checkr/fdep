@@ -44,7 +44,10 @@ class XMLRPCRequestHandler(SimpleXMLRPCRequestHandler):
 
     def parse_request(self):
         if SimpleXMLRPCRequestHandler.parse_request(self):
-            if XMLRPCRequestHandler.should_authenticate() and self.authenticate(self.headers):
+            if not XMLRPCRequestHandler.should_authenticate():
+                return True
+
+            if self.authenticate(self.headers):
                 return True
             else:
                 self.send_response(401, 'Authentication failed')

@@ -3,6 +3,8 @@ boto3
 requests
 colorama
 tqdm
+
+json-rpc
 raven
 
 pytest
