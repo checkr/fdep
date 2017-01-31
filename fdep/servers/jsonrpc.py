@@ -1,4 +1,6 @@
 """Implement a simple JSONRPC server."""
+from __future__ import absolute_import
+
 from base64 import b64decode
 
 from fdep.servers import RPCServer
