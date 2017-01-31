@@ -29,4 +29,5 @@ Extend the above class in your project and simply do the following:
 fdep will pick up your driver and use it to serve the model.
 
 .. note::
-   By default, fdep supports XML-RPC. ``fdep serve --driver=xmlrpc some_module``
+   fdep has built-in support for XMLRPC and JSONRPC.
+   ``fdep serve --driver=xmlrpc some_module`` or ``fdep serve --driver=jsonrpc some_module``
