@@ -94,33 +94,47 @@ class ServeCommandRunner(SubcommandRunner, ConfigRequiredMixin):
         kwargs['username'] = username
         kwargs['password'] = password
 
-        # Ensure everything is installed safe and sound.
-        if not self.root_runner.commands['install'].run():
-            return False
-
-        func_pairs = self.get_func_pairs(python_module_name)
-        if server_driver_name in self.__class__.KNOWN_DRIVERS:
-            server_driver = self.__class__.KNOWN_DRIVERS[server_driver_name]
-        else:
-            # User-provided driver
-            server_driver = self.resolve_module(server_driver_name)
-
-        integrations = []
         sentry_dsn = kwargs.get('sentry_dsn') or os.environ.get('SENTRY_DSN')
+        sentry_integration = None
         if sentry_dsn:
             try:
-                integrations.append(SentryIntegration(sentry_dsn))
+                sentry_integration = SentryIntegration(sentry_dsn)
             except ImportError:
                 sys.stderr.write(
                     self.messages.ERROR_NEED_TO_INSTALL_OPTIONAL.format('raven', 'Sentry')
                 )
-        fluentd_http_url = kwargs.get('fluentd_http_url') or os.environ.get('FLUENTD_HTTP_URL')
-        if fluentd_http_url:
-            integrations.append(FluentdHttpIntegration(fluentd_http_url))
 
-        if server_driver_name != 'console':
-            print(self.messages.SERVING.format(server_driver_name, python_module_name, port))
+        try:
+            # Ensure everything is installed safe and sound.
+            if not self.root_runner.commands['install'].run():
+                return False
 
-        server = server_driver()
-        server.register_functions(func_pairs)
-        server.serve_forever(**kwargs)
+            func_pairs = self.get_func_pairs(python_module_name)
+            if server_driver_name in self.__class__.KNOWN_DRIVERS:
+                server_driver = self.__class__.KNOWN_DRIVERS[server_driver_name]
+            else:
+                # User-provided driver
+                server_driver_path, server_driver_class = server_driver_name.rsplit('.', 1)
+                server_driver_module = self.resolve_module(server_driver_path)
+                server_driver = getattr(server_driver_module, server_driver_class)
+
+            integrations = []
+
+            if sentry_integration is not None:
+                integrations.append(sentry_integration)
+
+            fluentd_http_url = kwargs.get('fluentd_http_url') or os.environ.get('FLUENTD_HTTP_URL')
+            if fluentd_http_url:
+                integrations.append(FluentdHttpIntegration(fluentd_http_url))
+
+            if server_driver_name != 'console':
+                print(self.messages.SERVING.format(server_driver_name, python_module_name, port))
+
+            server = server_driver()
+            server.register_integrations(integrations)
+            server.register_functions(func_pairs)
+            server.serve_forever(**kwargs)
+        except Exception as e:
+            if sentry_integration is not None:
+                sentry_integration.capture_exception(e)
+            raise

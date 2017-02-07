@@ -35,4 +35,4 @@ class FluentdHttpIntegration(Integration):
             })
         ).status_code
         if status_code >= 400:
-            sys.stderr.write("Fluentd transmission failed")
+            sys.stderr.write("Fluentd transmission failed.\n")
