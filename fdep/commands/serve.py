@@ -84,7 +84,7 @@ class ServeCommandRunner(SubcommandRunner, ConfigRequiredMixin):
             return False
 
         python_module_name = args[0]
-        port = kwargs.get('port') or os.environ.get('PORT') or self.__class__.DEFAULT_PORT
+        port = int(kwargs.get('port') or os.environ.get('PORT') or self.__class__.DEFAULT_PORT)
         server_driver_name = kwargs.get('driver') or\
             os.environ.get('SERVER_DRIVER') or self.__class__.DEFAULT_DRIVER
         username = kwargs.get('username') or os.environ.get('RPC_USERNAME')
