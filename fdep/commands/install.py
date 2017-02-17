@@ -4,6 +4,8 @@
 
    fdep install [<files...>]
 """
+from __future__ import print_function
+
 import os
 import sys
 import time
@@ -47,7 +49,7 @@ class InstallCommandRunner(SubcommandRunner, ConfigRequiredMixin):
         queue = Queue()
         line_filler = lambda: sys.stdout.write('\n' * (len(to_install) - 1))  # noqa
         line_filler()
-        print('\x1b[A' * len(to_install))
+        print('\x1b[A' * len(to_install), file=sys.stderr)
         TqdmProgressBar.set_number_of_progressbars(len(to_install))
         threads = [
             Thread(
@@ -95,9 +97,15 @@ class InstallCommandRunner(SubcommandRunner, ConfigRequiredMixin):
                 if sha1sum is not None:
                     actual_sha1sum = HashHelper.calculate_sha1sum(path)
                     if sha1sum != actual_sha1sum:
-                        print(self.messages.FILE_CHANGED.format(entry_name))
+                        print(
+                            self.messages.FILE_CHANGED.format(entry_name),
+                            file=sys.stderr
+                        )
                         return False
-                print(self.messages.ALREADY_INSTALLED.format(entry_name))
+                print(
+                    self.messages.ALREADY_INSTALLED.format(entry_name),
+                    file=sys.stderr
+                )
                 continue
 
             to_install.append((entry_name, path, source_to_use, sha1sum))

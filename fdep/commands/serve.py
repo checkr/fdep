@@ -61,7 +61,8 @@ class ServeCommandRunner(SubcommandRunner, ConfigRequiredMixin):
             for name in names_to_resolve:
                 module = getattr(module, name)
         except ImportError:
-            sys.stderr.write(self.messages.ERROR_NO_SUCH_MODULE.format(module_name))
+            sys.stderr.write(
+                self.messages.ERROR_NO_SUCH_MODULE.format(module_name))
             return None
         return module
 
@@ -107,7 +108,7 @@ class ServeCommandRunner(SubcommandRunner, ConfigRequiredMixin):
         try:
             # Ensure everything is installed safe and sound.
             if not self.root_runner.commands['install'].run():
-                return False
+                raise Exception("fdep install failed")
 
             func_pairs = self.get_func_pairs(python_module_name)
             if server_driver_name in self.__class__.KNOWN_DRIVERS:

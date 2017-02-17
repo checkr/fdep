@@ -1,4 +1,6 @@
 """Interpret configuration files and execute."""
+from __future__ import print_function
+
 import sys
 
 from fdep import messages
@@ -62,7 +64,7 @@ class FdepRunner(CommandRunner):
     def run(self, *args, **kwargs):
         """Interpret the argv and run appropriate methods."""
         args = list(args)
-        print(self.messages.CURRENT_ENVIRONMENT.format(self.env))
+        print(self.messages.CURRENT_ENVIRONMENT.format(self.env), file=sys.stderr)
         if not len(args):
             cmd = command = None
         else:

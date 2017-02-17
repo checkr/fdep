@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
+
 import sys
+from inspect import signature
 
 from fdep.servers import RPCServer
 
@@ -12,21 +15,26 @@ class ConsoleServer(RPCServer):
         self.funcs = dict(func_pairs)
 
     def serve_forever(self, **kwargs):
-        print("🌝 Try things out!")
+        if not kwargs.get('func'):
+            print(
+                'Missing --func. Available functions: {}'.format(
+                    ', '.join(self.funcs.keys())
+                ),
+                file=sys.stderr
+            )
+            return
 
-        try:
-            if not kwargs.get('func'):
-                print('We have: {}'.format(', '.join(self.funcs.keys())))
-                sys.stdout.write('Which function? ')
-                sys.stdout.flush()
-                func_name = sys.stdin.readline().strip()
+        func_name = kwargs['func']
+        func = self.funcs[func_name]
+        params = list(signature(func).parameters)
+
+        args = []
+        for param in params:
+            if kwargs.get(param):
+                arg = kwargs[param]
             else:
-                func_name = kwargs['func']
-
-            while True:
-                sys.stdout.write("? ")
-                sys.stdout.flush()
-                value = sys.stdin.readline().strip()
-                print(self.funcs[func_name](value))
-        except KeyboardInterrupt:
-            print('')
+                sys.stderr.write("{}: ".format(param))
+                sys.stderr.flush()
+                arg = sys.stdin.readline().strip()
+            args.append(arg)
+        print(self.funcs[func_name](*args))
