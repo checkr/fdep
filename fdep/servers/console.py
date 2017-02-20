@@ -3,7 +3,7 @@
 from __future__ import print_function
 
 import sys
-from inspect import signature
+from inspect import getargspec
 
 from fdep.servers import RPCServer
 
@@ -26,7 +26,7 @@ class ConsoleServer(RPCServer):
 
         func_name = kwargs['func']
         func = self.funcs[func_name]
-        params = list(signature(func).parameters)
+        params = list(getargspec(func).args)
 
         args = []
         for param in params:
