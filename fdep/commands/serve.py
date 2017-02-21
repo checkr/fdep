@@ -61,8 +61,6 @@ class ServeCommandRunner(SubcommandRunner, ConfigRequiredMixin):
             for name in names_to_resolve:
                 module = getattr(module, name)
         except ImportError:
-            sys.stderr.write(
-                self.messages.ERROR_NO_SUCH_MODULE.format(module_name))
             return None
         return module
 
@@ -85,7 +83,17 @@ class ServeCommandRunner(SubcommandRunner, ConfigRequiredMixin):
             return False
 
         python_module_name = args[0]
-        port = int(kwargs.get('port') or os.environ.get('PORT') or self.__class__.DEFAULT_PORT)
+        try:
+            port = int(
+                kwargs.get('port') or
+                os.environ.get('PORT') or
+                self.__class__.DEFAULT_PORT
+            )
+        except ValueError:
+            sys.stderr.write(self.messages.ERROR_INVALID_ARGUMENT)
+            self.root_runner.commands['help'].run()
+            return False
+
         server_driver_name = kwargs.get('driver') or\
             os.environ.get('SERVER_DRIVER') or self.__class__.DEFAULT_DRIVER
         username = kwargs.get('username') or os.environ.get('RPC_USERNAME')
@@ -115,9 +123,17 @@ class ServeCommandRunner(SubcommandRunner, ConfigRequiredMixin):
                 server_driver = self.__class__.KNOWN_DRIVERS[server_driver_name]
             else:
                 # User-provided driver
-                server_driver_path, server_driver_class = server_driver_name.rsplit('.', 1)
-                server_driver_module = self.resolve_module(server_driver_path)
-                server_driver = getattr(server_driver_module, server_driver_class)
+                try:
+                    server_driver_path, server_driver_class = server_driver_name.rsplit(
+                        '.', 1
+                    )
+                    server_driver_module = self.resolve_module(server_driver_path)
+                    server_driver = getattr(server_driver_module, server_driver_class)
+                except (ValueError, AttributeError):
+                    sys.stderr.write(
+                        self.messages.ERROR_NO_SUCH_MODULE.format(server_driver_name))
+                    self.root_runner.commands['help'].run()
+                    return False
 
             integrations = []
 

@@ -115,7 +115,26 @@ def test_xmlrpc_server_auth(fdep_serve):
     th.join()
 
 
-def test_console_server(load_fixture, load_config, fdep):
+def test_serve(load_fixture, fdep):
+    load_fixture('serve')
+    # Should return 1 with a help message.
+    assert fdep('serve') == 1
+
+
+def test_console_server(load_fixture, fdep):
     load_fixture('serve')
     assert fdep('serve', 'app', '--func', 'classify', '--text', 'hello') == 0
     assert fdep('serve', 'app', '--func', 'wrong_func') == 1
+
+
+def test_wrong_port(load_fixture, fdep):
+    load_fixture('serve')
+    assert fdep('serve', '--port', 'ERROR', '--driver', 'xmlrpc', 'app') == 1
+
+
+def test_wrong_driver(load_fixture, fdep):
+    load_fixture('serve')
+    assert fdep('serve', '--driver', 'test_some_wrong_driver_name', 'app') == 1
+    assert fdep(
+        'serve', '--driver', 'test_some_wrong_driver_name.driver', 'app') == 1
+    assert fdep('serve', '--driver', 'app.test_driver', 'app') == 1
