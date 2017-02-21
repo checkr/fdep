@@ -17,7 +17,9 @@ def test_run_init(load_fixture, fdep):
 def test_run_add(load_fixture, fdep):
     load_fixture('basic/http')
     assert fdep('add', 'run_add.txt', 'http://example.com/run_add.txt') == 0
-    assert fdep('add', 'run_add.txt', 'http://example.com/run_add.txt') == 0  # Overwrite should work
+
+    # Overwriting should work.
+    assert fdep('add', 'run_add.txt', 'http://example.com/run_add.txt') == 0
 
 
 def test_run_rm(load_fixture, fdep):
@@ -34,7 +36,8 @@ def test_run_install_via_http(load_fixture, fdep, mock_requests_get):
 
     mock_requests_get.reset_mock()
     assert fdep('install', 'data/wordlist.txt') == 0
-    mock_requests_get.assert_not_called()  # For already downloaded files, it shouldn't redownload.
+    # For already downloaded files, it shoulnd't redownload.
+    mock_requests_get.assert_not_called()
 
 
 def test_run_install_via_s3(load_fixture, fdep, mock_s3):
@@ -57,7 +60,9 @@ def test_run_install_via_gspreadsheet(load_fixture, fdep, mock_requests_get):
     load_fixture('basic/gspreadsheet')
     assert fdep('install') == 0
     mock_requests_get.assert_called_with(
-        'https://docs.google.com/spreadsheets/d/test-id/export?format=csv', stream=True)
+        'https://docs.google.com/spreadsheets/d/test-id/export?format=csv',
+        stream=True
+    )
 
 
 def test_run_install_via_unsupported_backend(load_fixture, fdep):

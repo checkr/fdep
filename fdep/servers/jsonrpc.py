@@ -81,9 +81,15 @@ class JSONRPCServer(RPCServer):
         if kwargs.get('username') and kwargs.get('password'):
             JSONRPCRequestHandler.set_account(kwargs['username'], kwargs['password'])
 
-        server = HTTPServer(('0.0.0.0', kwargs['port']), JSONRPCRequestHandler)
+        self.server = HTTPServer(('0.0.0.0', kwargs['port']), JSONRPCRequestHandler)
 
         try:
-            server.serve_forever()
+            self.server.serve_forever()
         except KeyboardInterrupt:
             pass
+
+    def shutdown(self):
+        if not getattr(self, 'server', None):
+            raise Exception("The server has never been started.")
+        self.server.shutdown()
+        self.server.server_close()

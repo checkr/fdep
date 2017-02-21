@@ -22,7 +22,15 @@ class ConsoleServer(RPCServer):
                 ),
                 file=sys.stderr
             )
-            return
+            return False
+        if kwargs.get('func') not in self.funcs:
+            print(
+                'Bogus --func. Available functions: {}'.format(
+                    ', '.join(self.funcs.keys())
+                ),
+                file=sys.stderr
+            )
+            return False
 
         func_name = kwargs['func']
         func = self.funcs[func_name]
@@ -38,3 +46,7 @@ class ConsoleServer(RPCServer):
                 arg = sys.stdin.readline().strip()
             args.append(arg)
         print(self.funcs[func_name](*args))
+        return True
+
+    def shutdown(self):
+        pass

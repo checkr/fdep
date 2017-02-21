@@ -134,7 +134,7 @@ class ServeCommandRunner(SubcommandRunner, ConfigRequiredMixin):
             server = server_driver()
             server.register_integrations(integrations)
             server.register_functions(func_pairs)
-            server.serve_forever(**kwargs)
+            return server.serve_forever(**kwargs)
         except Exception as e:
             if sentry_integration is not None:
                 sentry_integration.capture_exception(e)

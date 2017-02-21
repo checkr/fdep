@@ -1,11 +1,12 @@
 """Implement a simple XMLRPC server."""
 from base64 import b64decode
 
+import six
 from fdep.servers import RPCServer
 
-try:
+if six.PY2:
     from SimpleXMLRPCServer import SimpleXMLRPCServer, SimpleXMLRPCRequestHandler
-except ImportError:
+else:
     from xmlrpc.server import SimpleXMLRPCServer, SimpleXMLRPCRequestHandler
 
 
@@ -67,16 +68,22 @@ class XMLRPCServer(RPCServer):
         if kwargs.get('username') and kwargs.get('password'):
             XMLRPCRequestHandler.set_account(kwargs['username'], kwargs['password'])
 
-        server = SimpleXMLRPCServer(('0.0.0.0', kwargs['port']), requestHandler=XMLRPCRequestHandler)
+        self.server = SimpleXMLRPCServer(('0.0.0.0', kwargs['port']), requestHandler=XMLRPCRequestHandler)
 
         for name, func in self.func_pairs:
-            server.register_function(
+            self.server.register_function(
                 self.wrap_function(name, func),
                 name=name
             )
-        server.register_multicall_functions()
+        self.server.register_multicall_functions()
 
         try:
-            server.serve_forever()
+            self.server.serve_forever()
         except KeyboardInterrupt:
             pass
+
+    def shutdown(self):
+        if not getattr(self, 'server', None):
+            raise Exception("The server has never been started.")
+        self.server.shutdown()
+        self.server.server_close()

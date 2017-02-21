@@ -1,3 +1,4 @@
+six
 PyYAML
 boto3
 requests
@@ -10,7 +11,6 @@ raven
 pytest
 pytest-cov
 pytest-mock
-pytest-blockage
 
 tox
 tox-pyenv

@@ -1,6 +1,7 @@
 import os
 import shutil
 import sys
+from threading import Thread
 
 from pytest import fixture
 
@@ -30,6 +31,22 @@ def fdep(test_project_path):
         os.chdir(os.path.join(test_project_path, 'project'))
         return main(['fdep'] + list(args))
     return _func
+
+
+@fixture
+def fdep_serve(fdep):
+    class FdepServeBackground(Thread):
+        def __init__(self, server, **kwargs):
+            self.server = server
+            self.kwargs = kwargs
+            Thread.__init__(self)
+
+        def run(self):
+            self.server.serve_forever(**self.kwargs)
+
+        def stop(self):
+            self.server.shutdown()
+    return FdepServeBackground
 
 
 @fixture
