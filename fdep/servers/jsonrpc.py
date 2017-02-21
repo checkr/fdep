@@ -4,13 +4,9 @@ from __future__ import absolute_import
 from base64 import b64decode
 
 from fdep.servers import RPCServer
-
 from jsonrpc import JSONRPCResponseManager, dispatcher
 
-try:
-    from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
-except ImportError:
-    from http.server import BaseHTTPRequestHandler, HTTPServer
+from six.moves.BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 
 
 class JSONRPCRequestHandler(BaseHTTPRequestHandler):

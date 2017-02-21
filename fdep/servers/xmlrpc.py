@@ -4,10 +4,7 @@ from base64 import b64decode
 import six
 from fdep.servers import RPCServer
 
-if six.PY2:
-    from SimpleXMLRPCServer import SimpleXMLRPCServer, SimpleXMLRPCRequestHandler
-else:
-    from xmlrpc.server import SimpleXMLRPCServer, SimpleXMLRPCRequestHandler
+from six.moves.xmlrpc_server import SimpleXMLRPCServer, SimpleXMLRPCRequestHandler
 
 
 class XMLRPCRequestHandler(SimpleXMLRPCRequestHandler):

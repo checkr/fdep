@@ -16,10 +16,7 @@ from fdep.commands import ConfigRequiredMixin, SubcommandRunner
 from fdep.interfaces.progressbar import TqdmProgressBar
 from fdep.utils import HashHelper
 
-try:
-    from Queue import Queue
-except ImportError:
-    from queue import Queue
+from six.moves.queue import Queue
 
 
 class UploadCommandRunner(SubcommandRunner, ConfigRequiredMixin):

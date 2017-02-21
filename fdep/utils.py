@@ -4,10 +4,7 @@ import errno
 import os
 from hashlib import sha1
 
-try:
-    from urlparse import urlparse
-except ImportError:  # pragma: no cover
-    from urllib.parse import urlparse
+from six.moves.urllib.parse import urlparse
 
 
 class PathHelper(object):
