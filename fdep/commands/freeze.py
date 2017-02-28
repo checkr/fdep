@@ -4,7 +4,7 @@
 
    fdep freeze <files...>
 
-Once you freeze a file, fdep will check the file's sha1sum every download, to make sure your model is always reproducible.
+Once you freeze a file, fdep will check the file's SHA1SUM every download to make sure your model is always reproducible.
 """
 import os
 import sys

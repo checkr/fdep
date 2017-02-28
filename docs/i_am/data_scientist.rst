@@ -1,7 +1,8 @@
 A Data Scientist
 ================
 
-Train your model and ship products really quickly! No chores needed, you can start with just one Python source code.
+Train your model and ship products at the speed of light! No chores needed,
+you can start with just one Python file.
 
 
 Set Up Your Machine Learning Project
@@ -23,7 +24,8 @@ Example: English Word Checker
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Let's work on a really trivial example to help you understand how to use fdep.
-How about building a word list from an English book and determining if the given word is an English word?
+How about building a word list from a book and determining if the
+given word is in the book?
 
 First, let's add a plain-text English book from Gutenberg_.
 
@@ -32,7 +34,6 @@ First, let's add a plain-text English book from Gutenberg_.
 .. code:: bash
 
    fdep add data/pride-and-prejudice.txt https://www.gutenberg.org/files/1342/1342-0.txt
-   fdep install
 
 And write a simple Python program:
 
@@ -55,8 +56,13 @@ And write a simple Python program:
            f.write(word + '\n')
 
 This simple code will build the file ``data/wordlist.txt``.
-Let's go ahead and build the wordlist by ``python build_wordlist.py``.
-Now, let's build a function that actually does what we want to do.
+Let's go ahead and build the wordlist with
+.. code:: bash
+
+   python build_wordlist.py
+
+
+Now, let's build a function that checks if a given word is in our set.
 
 .. code-block:: python
    :linenos:
@@ -87,7 +93,7 @@ Wait, this is just a function, though. How do we test this? It's easy!
 Upload Your Dataset
 ~~~~~~~~~~~~~~~~~~~
 
-We built the wordlist. We should probably want to save our wordlist somewhere.
+Now that we built the wordlist, we probably want to save it somewhere.
 Let's use S3 as our storage backend. You can add your file to the ``fdep.yml`` file and manage it there by:
 
 .. code:: bash
@@ -100,7 +106,7 @@ But note that the above command doesn't upload the file itself. Let's upload the
 
    fdep commit data/wordlist.txt
 
-Done! Make sure you commit your ``fdep.yml`` on git, so that the version you just uploaded can be tracked properly on git, or whatever version control system you use.
+Done! Commit both adds the sha1 hash to ``fdep.yml`` and uploads the file to its specified storage location. Make sure you commit your ``fdep.yml`` on git, so that the version you just uploaded can be tracked properly on git, or whatever version control system you use.
 
 .. code:: bash
 
@@ -129,7 +135,7 @@ And also, for production, it doesn't make sense to have the English book there.
    fdep link development:data/wordlist.txt production:data/wordlist.txt
 
 The above command will link the two different environments and make them use the same ``data/wordlist.txt``.
-So as a result, you would have the ``fdep.yml`` file like this:
+So as a result, your ``fdep.yml`` will look like this:
 
 .. code-block:: yaml
 
@@ -142,7 +148,10 @@ So as a result, you would have the ``fdep.yml`` file like this:
      data/wordlist.txt: *id001
 
 
-The command line below will install ``data/wordlist.txt``, but not ``data/pride-and-prejudice.txt``.
+Now, both your development and production environments will get their
+wordlist from s3://my-nlp-project/wordlist.txt.  The command line
+below will install ``data/wordlist.txt``, but not
+``data/pride-and-prejudice.txt``.
 
 .. code:: bash
 

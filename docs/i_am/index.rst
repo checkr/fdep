@@ -1,5 +1,5 @@
-Usecase: I am ...
-=================
+Use Cases: I am ...
+===================
 
 .. toctree::
    :maxdepth: 4

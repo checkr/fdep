@@ -14,13 +14,19 @@ The Two Concerns
 1. Machine Learning
 ~~~~~~~~~~~~~~~~~~~
 
-It's probably the meat for your current project. Developing a successful machine learning model for business requires lots of science, and sometimes inter-department collaboration/communication in order to validate and improve the model. Many critical insights about the data come from domain experts of the business, and it is essential to keep them in the loop, build a ground-truth dataset, and validate the result in a collaborative manner. How do we collaborate with them efficiently?
+To solve business problems with machine learning, we not only need to work with other developers, but we need consistent collaboration with domain experts. This is how we are able to label, validate, and improve models. But, how do we collaborate with others efficiently?
 
 
 2. Building A Service
 ~~~~~~~~~~~~~~~~~~~~~
 
-Let's say this, it's not rocket science. You could make this rocket science, but keeping it simple and stupid is always a better choice. While there are many good tools out there, it requires a lot of work. Even more so if you know that it's a little different area of expertise than data science. There are many unresolved parts, if you see this just as an API service. For example, how are we going to deploy the weights numpy file for a deep convolutional neural network? Will it break the running services if I change the model's input shape? What if I use a completely different framework now? Where do we upload our dataset?
+It's not rocket science. You can make it rocket science, but keeping it
+simple is always a better choice. Many of the current offerings require too
+much work, especially if your expertise is data science.
+There are many unresolved parts, if you see this just as an API service. For
+example, how are we going to deploy our model's weights for a deep
+convolutional neural network? Will it break the running services if I change the model's input shape?
+What if I use a completely different framework now? Where do we upload our dataset?
 
 
 Solution: fdep
@@ -49,7 +55,7 @@ You can upload your dataset, or model with a version tag by the following comman
 Support of More Popular Sources
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Google Spreadsheet is supported.
+Google Sheets is supported.
 
 
 Run Your Server with Just One Command
