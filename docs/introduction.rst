@@ -55,7 +55,7 @@ You can upload your dataset, or model with a version tag by the following comman
 Support of More Popular Sources
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Google Sheets are supported.
+Google Sheets is supported.
 
 
 Run Your Server with Just One Command
