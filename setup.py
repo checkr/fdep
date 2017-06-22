@@ -20,7 +20,7 @@ setup(
     },
     install_requires=[
         'PyYAML==3.12',
-        'boto3==1.4.0',
+        'boto3==1.4.4',
         'requests==2.11.1',
         'colorama==0.3.7',
         'tqdm==4.8.4',
