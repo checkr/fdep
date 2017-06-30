@@ -1,6 +1,6 @@
 dependencies:
   override:
-    - pip install tox tox-pyenv codeclimate-test-reporter
+    - pip install tox tox-pyenv coverage==4.3.4 codeclimate-test-reporter
     - pyenv global 2.7.11 3.1.5 3.2.6 3.3.6 3.4.4 3.5.1 pypy-4.0.1
 
 test:
