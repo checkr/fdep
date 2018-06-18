@@ -13,6 +13,7 @@ class JSONRPCRequestHandler(BaseHTTPRequestHandler):
     """Implement JSON RPC request handler."""
     username = None
     password = None
+    temp_password = None
 
     def authenticate(self, headers):
         auth = headers.get('Authorization')
@@ -28,15 +29,17 @@ class JSONRPCRequestHandler(BaseHTTPRequestHandler):
         decodedString = decodedBytes.decode()
         (username, _, password) = decodedString.partition(':')
         if username == self.__class__.username and\
-                password == self.__class__.password:
+                (password == self.__class__.password or\
+                    self.__class__.temp_password is not None and password == self.__class__.temp_password):
             return True
         else:
             return False
 
     @classmethod
-    def set_account(cls, username, password):
+    def set_account(cls, username, password, temp_password):
         cls.username = username
         cls.password = password
+        cls.temp_password = temp_password
 
     @classmethod
     def should_authenticate(cls):
@@ -75,7 +78,7 @@ class JSONRPCServer(RPCServer):
     def serve_forever(self, **kwargs):
 
         if kwargs.get('username') and kwargs.get('password'):
-            JSONRPCRequestHandler.set_account(kwargs['username'], kwargs['password'])
+            JSONRPCRequestHandler.set_account(kwargs['username'], kwargs['password'], kwargs.get('temp_password'))
 
         self.server = HTTPServer(('0.0.0.0', kwargs['port']), JSONRPCRequestHandler)
 
