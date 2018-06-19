@@ -49,7 +49,7 @@ def test_basic_jsonrpc_server(fdep_serve):
 def test_jsonrpc_server_auth(fdep_serve):
     server = setup_test_server(JSONRPCServer)
     th = fdep_serve(
-        server, port=14244, username='test', password='pass')
+        server, port=14244, username='test', password='pass', temp_password='12345')
     th.start()
     time.sleep(1)
 
@@ -81,6 +81,16 @@ def test_jsonrpc_server_auth(fdep_serve):
     assert res['jsonrpc']
     assert res['id'] == 0
 
+    res = requests.post(
+        'http://127.0.0.1:14244', data=json.dumps(payload),
+        headers=headers, auth=('test', '12345')
+    ).json()
+
+    # With alternative credentials, it should function properly.
+    assert res['result'] is True
+    assert res['jsonrpc']
+    assert res['id'] == 0
+
     th.stop()
     th.join()
 
@@ -100,7 +110,7 @@ def test_basic_xmlrpc_server(fdep_serve):
 
 def test_xmlrpc_server_auth(fdep_serve):
     server = setup_test_server(XMLRPCServer)
-    th = fdep_serve(server, port=14243, username='test', password='pass')
+    th = fdep_serve(server, port=14243, username='test', password='pass', temp_password='12345')
     th.start()
     time.sleep(1)
 

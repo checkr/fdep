@@ -98,10 +98,12 @@ class ServeCommandRunner(SubcommandRunner, ConfigRequiredMixin):
             os.environ.get('SERVER_DRIVER') or self.__class__.DEFAULT_DRIVER
         username = kwargs.get('username') or os.environ.get('RPC_USERNAME')
         password = kwargs.get('password') or os.environ.get('RPC_PASSWORD')
+        temp_password = kwargs.get('temp_password') or os.environ.get('RPC_PASSWORD_TEMP')
 
         kwargs['port'] = port
         kwargs['username'] = username
         kwargs['password'] = password
+        kwargs['temp_password'] = temp_password
 
         sentry_dsn = kwargs.get('sentry_dsn') or os.environ.get('SENTRY_DSN')
         sentry_integration = None
