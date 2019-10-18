@@ -19,11 +19,11 @@ setup(
         'console_scripts': ['fdep=fdep.__main__:main']
     },
     install_requires=[
-        'PyYAML==3.12',
-        'boto3==1.4.4',
-        'requests==2.11.1',
-        'colorama==0.3.7',
-        'tqdm==4.8.4',
-        'json-rpc==1.10.3'
+        'PyYAML>=3.12',
+        'boto3>=1.4.4',
+        'requests>=2.11.1',
+        'colorama>=0.3.7',
+        'tqdm>=4.8.4',
+        'json-rpc>=1.10.3'
     ]
 )
