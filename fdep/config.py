@@ -92,7 +92,7 @@ class FdepConfig(object):
 
         with open(path) as f:
             root_path = os.path.dirname(path)
-            return FdepConfig(root_path, yaml.load(f.read()))
+            return FdepConfig(root_path, yaml.full_load(f.read()))
 
     @classmethod
     def find_root_path(cls, current_path='.'):
